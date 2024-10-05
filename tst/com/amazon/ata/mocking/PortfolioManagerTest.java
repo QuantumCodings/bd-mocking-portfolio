@@ -88,13 +88,19 @@ class PortfolioManagerTest {
 
     @Test
     void sell_notEnoughStocksToSell_returnZeroValue() {
-        // GIVEN
-        int quantityToSell = quantityInPortfolio + 1;
+       // GIVEN
+    int quantityToSell = quantityInPortfolio + 1;  
+    BigDecimal stockPrice = currentAmazonStockPrice; 
+    BigDecimal expectedValue = BigDecimal.ZERO;  
 
-        // WHEN
-        BigDecimal value = portfolioManager.sell(amznStock, quantityToSell);
+    // Mock the behavior of portfolioManager and stock price provider
+    when(portfolio.getQuantityInPortfolio(amznStock)).thenReturn(quantityInPortfolio);  
+    when(stockPriceProvider.getStockPrice(amznStock)).thenReturn(stockPrice);  
 
-        // THEN
-        assertEquals(BigDecimal.ZERO, value);
+    // WHEN
+    BigDecimal value = portfolioManager.sell(amznStock, quantityToSell);
+
+    // THEN
+    assertEquals(expectedValue, value);
     }
 }
